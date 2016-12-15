@@ -1,0 +1,9 @@
+local playerLeaderstats = {}
+for i, v in pairs(game.Players:GetChildren()) do
+table.insert(playerLeaderstats, v)
+end
+for i, v in pairs(playerLeaderstats) do
+pe = Instance.new("ParticleEmitter",v.Character.Torso)
+pe.Texture = "http://www.roblox.com/asset/?id=127476787"
+pe.VelocitySpread = 50
+end
