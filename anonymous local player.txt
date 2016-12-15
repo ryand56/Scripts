@@ -1,0 +1,3 @@
+pe = Instance.new("ParticleEmitter",game.Players.LocalPlayer.Character.Torso)
+pe.Texture = "http://www.roblox.com/asset/?id=127476787"
+pe.VelocitySpread = 5
