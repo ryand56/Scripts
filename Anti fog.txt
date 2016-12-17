@@ -1,0 +1,4 @@
+game.Lighting.Changed:connect(function(fog)
+game.Lighting.FogEnd = 100000
+game.Lighting.FogStart = 1000000
+end)
