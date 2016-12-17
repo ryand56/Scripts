@@ -1,0 +1,912 @@
+function clerp(c1,c2,al)
+    local com1 = {c1.X,c1.Y,c1.Z,c1:toEulerAnglesXYZ()}
+    local com2 = {c2.X,c2.Y,c2.Z,c2:toEulerAnglesXYZ()}
+    for i,v in pairs(com1) do
+        com1[i] = v+(com2[i]-v)*al
+    end
+    return CFrame.new(com1[1],com1[2],com1[3]) * CFrame.Angles(select(4,unpack(com1)))
+end
+
+
+plr = game:service'Players'.LocalPlayer
+plrgui = plr.PlayerGui
+char = plr.Character
+mouse = plr:GetMouse()
+humanoid = char:findFirstChild("Humanoid")
+torso = char:findFirstChild("Torso")
+head = char.Head
+ra = char:findFirstChild("Right Arm")
+la = char:findFirstChild("Left Arm")
+rl = char:findFirstChild("Right Leg")
+ll = char:findFirstChild("Left Leg")
+rs = torso:findFirstChild("Right Shoulder")
+ls = torso:findFirstChild("Left Shoulder")
+rh = torso:findFirstChild("Right Hip")
+lh = torso:findFirstChild("Left Hip")
+neck = torso:findFirstChild("Neck")
+rj = char:findFirstChild("HumanoidRootPart"):findFirstChild("RootJoint")
+rootpart = char:findFirstChild("HumanoidRootPart")
+camera = workspace.CurrentCamera
+anim = char:findFirstChild("Animate")
+local sound = Instance.new("Sound", char)
+sound.Volume = 1
+sound.Looped = true
+sound.Name = "Sound"
+
+SoundsList = {}
+
+function newSound(name, id, pitch, puush)
+    if not puush == true then puush = false end
+    if puush then
+        table.insert(SoundsList, {["Name"]=name, ["ID"]="puush("..id..")", ["Pitch"]=pitch or 1})
+    else
+        table.insert(SoundsList, {["Name"]=name, ["ID"]=id, ["Pitch"]=pitch or 1})
+    end
+end
+
+newSound("Saints Row IV Theme (puush asset)", "9jVEX", 1, true)
+newSound("Lemon Tree - Fool's Garden (puush asset)", "9jVD9", 1, true)
+newSound("What is Love", "142544487")
+newSound("Martin Garrix - Animals", "142370129")
+newSound("The Proclaimers - 500 Miles", "151371405")
+newSound("Avicii - Wake me up", "142603004")
+newSound("Hip Hop - Jeff Syndicate", "27697735", 3)
+newSound("Alice Deejay - Better Off Alone", "142397452")
+newSound("BBBFF - My Little Pony", "142605535")
+newSound("Intro - My Little Pony", "142626518")
+newSound("Bangarang - Skrillex", "142319852")
+newSound("Surfin' Bird ", "145567707")
+newSound("You've been trolled", "142633540")
+newSound('Disco Star - Spongebob video game', '144906669')
+newSound("Europe - The Final Countdown", "142859512")
+newSound("LMFAO - Party Rock Anthem", "145262991")
+newSound("Darude - Sandstorm", "142401311", .53)
+newSound('Skrillex - Fire', '150137157')
+newSound('Spongebob - Goofy Goober Rock', '142396943')
+newSound('The Slenderman song (Comedy)', '142776228')
+newSound('Avicii - Levels', "148424799")
+newSound('Erectin\' a river', '145849454')
+newSound('TTC - Fat cat Adventures [Glitch Hop]', '142808748')
+newSound('Thrift Shop - Macklemore', '155119191')
+newSound('Five Nights At Freddys 2 Song', '192043328')
+
+local function HSV(H,S,V)
+H = H % 360
+local C = V * S
+local H2 = H/60
+local X = C * (1 - math.abs((H2 %2) -1))
+local color = Color3.new(0,0,0)
+if H2 <= 0 then
+color = Color3.new(C,0,0)
+elseif 0 <= H2 and H2 <= 1 then
+color = Color3.new(C,X,0)
+elseif 1 <= H2 and H2 <= 2 then
+color = Color3.new(X,C,0)
+elseif 2 <= H2 and H2 <= 3 then
+color = Color3.new(0,C,X)
+elseif 3 <= H2 and H2 <= 4 then
+color = Color3.new(0,X,C)
+elseif 4 <= H2 and H2 <= 5 then
+color = Color3.new(X,0,C)
+elseif 5 <= H2 and H2 <= 6 then
+color = Color3.new(C,0,X)
+end
+local m = V - C
+return Color3.new(color.r + m, color.g + m, color.b + m)
+end
+
+function RemoveDisco()
+        char:findFirstChild'DiscoBox':remove()
+        gui:remove()
+        sound:stop()
+end
+
+function BeginPlacingDisco()
+                -- 1 - DiscoBox
+                local obj1 = Instance.new("Model")
+                obj1.Name = "DiscoBox"
+                obj1.Parent = char
+
+                -- 2 - DiscTop
+                obj2 = Instance.new("Part")
+                obj2.CFrame = CFrame.new(Vector3.new(-34.5000038, 3.09000182, -48.5)) * CFrame.Angles(-0, 0, -0)
+                obj2.FormFactor = Enum.FormFactor.Custom
+                obj2.TopSurface = Enum.SurfaceType.Smooth
+                obj2.BottomSurface = Enum.SurfaceType.Smooth
+                obj2.Material = Enum.Material.SmoothPlastic
+                obj2.Size = Vector3.new(3, 0.200000003, 3)
+                obj2.BrickColor = BrickColor.new("Dark stone grey")
+                obj2.Friction = 0.30000001192093
+                obj2.Shape = Enum.PartType.Block
+                obj2.Name = "DiscTop"
+                obj2.Parent = obj1
+
+                -- 3 - Mesh
+                obj3 = Instance.new("CylinderMesh")
+                obj3.Scale = Vector3.new(0.200000003, 1.04999995, 0.200000003)
+                obj3.Parent = obj2
+
+                -- 4 - Part-to-Part Strong Joint
+                obj4 = Instance.new("ManualWeld")
+                obj4.Part0 = DiscTop
+                obj4.Part1 = Part
+                obj4.Name = "Part-to-Part Strong Joint"
+                obj4.Parent = obj2
+
+                -- 5 - Disc
+                obj5 = Instance.new("Part")
+                obj5.CFrame = CFrame.new(Vector3.new(-34.5, 3.08999991, -48.5)) * CFrame.Angles(-0, 0, -0)
+                obj5.FormFactor = Enum.FormFactor.Custom
+                obj5.TopSurface = Enum.SurfaceType.Smooth
+                obj5.BottomSurface = Enum.SurfaceType.Smooth
+                obj5.Material = Enum.Material.Sand
+                obj5.Size = Vector3.new(3, 0.200000003, 3)
+                obj5.BrickColor = BrickColor.new("Black")
+                obj5.Friction = 0.30000001192093
+                obj5.Shape = Enum.PartType.Block
+                obj5.Name = "Disc"
+                obj5.Parent = obj1
+
+                -- 6 - Mesh
+                obj6 = Instance.new("CylinderMesh")
+                obj6.Scale = Vector3.new(0.899999976, 1, 0.899999976)
+                obj6.Parent = obj5
+
+                -- 7 - Part-to-Part Strong Joint
+                obj7 = Instance.new("ManualWeld")
+                obj7.Part0 = Disc
+                obj7.Part1 = Part
+                obj7.Name = "Part-to-Part Strong Joint"
+                obj7.Parent = obj5
+
+                -- 8 - Part
+                obj8 = Instance.new("Part")
+                obj8.CFrame = CFrame.new(Vector3.new(-37.5, 2.88999987, -49.5)) * CFrame.Angles(-0, 0, -0)
+                obj8.FormFactor = Enum.FormFactor.Custom
+                obj8.TopSurface = Enum.SurfaceType.Smooth
+                obj8.BottomSurface = Enum.SurfaceType.Smooth
+                obj8.Material = Enum.Material.SmoothPlastic
+                obj8.Size = Vector3.new(1, 0.200000003, 1)
+                obj8.BrickColor = BrickColor.new("Mid gray")
+                obj8.Friction = 0.30000001192093
+                obj8.Shape = Enum.PartType.Block
+                obj8.Parent = obj1
+
+                -- 9 - Mesh
+                obj9 = Instance.new("CylinderMesh")
+                obj9.Scale = Vector3.new(0.5, 1.04999995, 0.5)
+                obj9.Parent = obj8
+
+                -- 10 - Part-to-Part Strong Joint
+                obj10 = Instance.new("ManualWeld")
+                obj10.Part0 = Part
+                obj10.Part1 = Part
+                obj10.Name = "Part-to-Part Strong Joint"
+                obj10.Parent = obj8
+
+                -- 11 - Part
+                obj11 = Instance.new("Part")
+                obj11.CFrame = CFrame.new(Vector3.new(-36.5, 2.88999987, -49.5)) * CFrame.Angles(-0, 0, -0)
+                obj11.FormFactor = Enum.FormFactor.Custom
+                obj11.TopSurface = Enum.SurfaceType.Smooth
+                obj11.BottomSurface = Enum.SurfaceType.Smooth
+                obj11.Material = Enum.Material.SmoothPlastic
+                obj11.Size = Vector3.new(1, 0.200000003, 1)
+                obj11.BrickColor = BrickColor.new("Mid gray")
+                obj11.Friction = 0.30000001192093
+                obj11.Shape = Enum.PartType.Block
+                obj11.Parent = obj1
+
+                -- 12 - Mesh
+                obj12 = Instance.new("CylinderMesh")
+                obj12.Scale = Vector3.new(0.400000006, 1.04999995, 0.400000006)
+                obj12.Parent = obj11
+
+                -- 13 - Bar
+                obj13 = Instance.new("Part")
+                obj13.CFrame = CFrame.new(Vector3.new(-37.0000114, 3.09000063, -50.5)) * CFrame.Angles(-0, 0, -0)
+                obj13.FormFactor = Enum.FormFactor.Custom
+                obj13.TopSurface = Enum.SurfaceType.Smooth
+                obj13.BottomSurface = Enum.SurfaceType.Smooth
+                obj13.Material = Enum.Material.SmoothPlastic
+                obj13.Size = Vector3.new(7.99999905, 0.200000003, 1)
+                obj13.BrickColor = BrickColor.new("Really black")
+                obj13.Friction = 0.30000001192093
+                obj13.Shape = Enum.PartType.Block
+                obj13.Parent = obj1
+
+                -- 14 - Part-to-Part Strong Joint
+                obj14 = Instance.new("ManualWeld")
+                obj14.Part0 = Part
+                obj14.Part1 = nil
+                obj14.Name = "Part-to-Part Strong Joint"
+                obj14.Parent = obj13
+
+                -- 15 - Part-to-Part Strong Joint
+                obj15 = Instance.new("ManualWeld")
+                obj15.Part0 = Part
+                obj15.Part1 = nil
+                obj15.Name = "Part-to-Part Strong Joint"
+                obj15.Parent = obj13
+
+                -- 16 - Mesh
+                obj16 = Instance.new("BlockMesh")
+                obj16.Scale = Vector3.new(0.899999976, 1.04999995, 0.200000003)
+                obj16.Parent = obj13
+
+                -- 17 - Box
+                obj17 = Instance.new("Part")
+                obj17.CFrame = CFrame.new(Vector3.new(-37, 1.49000001, -49)) * CFrame.Angles(-0, 0, -0)
+                obj17.FormFactor = Enum.FormFactor.Symmetric
+                obj17.TopSurface = Enum.SurfaceType.Smooth
+                obj17.BottomSurface = Enum.SurfaceType.Smooth
+                obj17.Material = Enum.Material.SmoothPlastic
+                obj17.Size = Vector3.new(8, 3, 4)
+                obj17.BrickColor = BrickColor.new("Dark stone grey")
+                obj17.Friction = 0.30000001192093
+                obj17.Shape = Enum.PartType.Block
+                obj17.Name = "Box"
+                obj17.Parent = obj1
+
+                -- 18 - Part-to-Part Strong Joint
+                obj18 = Instance.new("ManualWeld")
+                obj18.Part0 = Box
+                obj18.Part1 = Part
+                obj18.Name = "Part-to-Part Strong Joint"
+                obj18.Parent = obj17
+
+                -- 19 - Part-to-Part Strong Joint
+                obj19 = Instance.new("ManualWeld")
+                obj19.Part0 = Box
+                obj19.Part1 = Disc
+                obj19.Name = "Part-to-Part Strong Joint"
+                obj19.Parent = obj17
+
+                -- 20 - Part-to-Part Strong Joint
+                obj20 = Instance.new("ManualWeld")
+                obj20.Part0 = Box
+                obj20.Part1 = Disc2
+                obj20.Name = "Part-to-Part Strong Joint"
+                obj20.Parent = obj17
+
+                -- 21 - Part-to-Part Strong Joint
+                obj21 = Instance.new("ManualWeld")
+                obj21.Part0 = Box
+                obj21.Part1 = DiscTop2
+                obj21.Name = "Part-to-Part Strong Joint"
+                obj21.Parent = obj17
+
+                -- 22 - Part-to-Part Strong Joint
+                obj22 = Instance.new("ManualWeld")
+                obj22.Part0 = Box
+                obj22.Part1 = DiscTop
+                obj22.Name = "Part-to-Part Strong Joint"
+                obj22.Parent = obj17
+
+                -- 23 - Part-to-Part Strong Joint
+                obj23 = Instance.new("ManualWeld")
+                obj23.Part0 = Box
+                obj23.Part1 = Part
+                obj23.Name = "Part-to-Part Strong Joint"
+                obj23.Parent = obj17
+
+                -- 24 - Part-to-Part Strong Joint
+                obj24 = Instance.new("ManualWeld")
+                obj24.Part0 = Box
+                obj24.Part1 = Part
+                obj24.Name = "Part-to-Part Strong Joint"
+                obj24.Parent = obj17
+
+                -- 25 - Part-to-Part Strong Joint
+                obj25 = Instance.new("ManualWeld")
+                obj25.Part0 = Box
+                obj25.Part1 = Part
+                obj25.Name = "Part-to-Part Strong Joint"
+                obj25.Parent = obj17
+
+                -- 26 - Box-to-Part Strong Joint
+                obj26 = Instance.new("ManualWeld")
+                obj26.Part0 = Box
+                obj26.Part1 = Slider
+                obj26.Name = "Box-to-Part Strong Joint"
+                obj26.Parent = obj17
+
+                -- 27 - Box-to-Part Strong Joint
+                obj27 = Instance.new("ManualWeld")
+                obj27.Part0 = Box
+                obj27.Part1 = Slider2
+                obj27.Name = "Box-to-Part Strong Joint"
+                obj27.Parent = obj17
+
+                -- 28 - Part
+                obj28 = Instance.new("Part")
+                obj28.CFrame = CFrame.new(Vector3.new(-37.5, 2.88999987, -48.5)) * CFrame.Angles(-0, 0, -0)
+                obj28.FormFactor = Enum.FormFactor.Custom
+                obj28.TopSurface = Enum.SurfaceType.Smooth
+                obj28.BottomSurface = Enum.SurfaceType.Smooth
+                obj28.Material = Enum.Material.SmoothPlastic
+                obj28.Size = Vector3.new(1, 0.200000003, 1)
+                obj28.BrickColor = BrickColor.new("Bright red")
+                obj28.Friction = 0.30000001192093
+                obj28.Shape = Enum.PartType.Block
+                obj28.Parent = obj1
+
+                -- 29 - Mesh
+                obj29 = Instance.new("CylinderMesh")
+                obj29.Scale = Vector3.new(0.5, 1.04999995, 0.5)
+                obj29.Parent = obj28
+
+                -- 30 - Part-to-Part Strong Joint
+                obj30 = Instance.new("ManualWeld")
+                obj30.Part0 = Part
+                obj30.Part1 = Part
+                obj30.Name = "Part-to-Part Strong Joint"
+                obj30.Parent = obj28
+
+                -- 31 - Part-to-Part Strong Joint
+                obj31 = Instance.new("ManualWeld")
+                obj31.Part0 = Part
+                obj31.Part1 = Part
+                obj31.Name = "Part-to-Part Strong Joint"
+                obj31.Parent = obj28
+
+                -- 32 - Part
+                obj32 = Instance.new("Part")
+                obj32.CFrame = CFrame.new(Vector3.new(-37, 3.09000087, -50.5)) * CFrame.Angles(-0, 0, -0)
+                obj32.FormFactor = Enum.FormFactor.Custom
+                obj32.TopSurface = Enum.SurfaceType.Smooth
+                obj32.BottomSurface = Enum.SurfaceType.Smooth
+                obj32.Material = Enum.Material.SmoothPlastic
+                obj32.Size = Vector3.new(8, 0.200000003, 1)
+                obj32.BrickColor = BrickColor.new("Dark stone grey")
+                obj32.Friction = 0.30000001192093
+                obj32.Shape = Enum.PartType.Block
+                obj32.Parent = obj1
+
+                -- 33 - Part-to-Part Strong Joint
+                obj33 = Instance.new("ManualWeld")
+                obj33.Part0 = Part
+                obj33.Part1 = Disc
+                obj33.Name = "Part-to-Part Strong Joint"
+                obj33.Parent = obj32
+
+                -- 34 - Part-to-Part Strong Joint
+                obj34 = Instance.new("ManualWeld")
+                obj34.Part0 = Part
+                obj34.Part1 = Disc2
+                obj34.Name = "Part-to-Part Strong Joint"
+                obj34.Parent = obj32
+
+                -- 35 - Part-to-Part Strong Joint
+                obj35 = Instance.new("ManualWeld")
+                obj35.Part0 = Part
+                obj35.Part1 = DiscTop2
+                obj35.Name = "Part-to-Part Strong Joint"
+                obj35.Parent = obj32
+
+                -- 36 - Part-to-Part Strong Joint
+                obj36 = Instance.new("ManualWeld")
+                obj36.Part0 = Part
+                obj36.Part1 = DiscTop
+                obj36.Name = "Part-to-Part Strong Joint"
+                obj36.Parent = obj32
+
+                -- 37 - Part
+                obj37 = Instance.new("Part")
+                obj37.CFrame = CFrame.new(Vector3.new(-36.5, 2.88999987, -48.5)) * CFrame.Angles(-0, 0, -0)
+                obj37.FormFactor = Enum.FormFactor.Custom
+                obj37.TopSurface = Enum.SurfaceType.Smooth
+                obj37.BottomSurface = Enum.SurfaceType.Smooth
+                obj37.Material = Enum.Material.SmoothPlastic
+                obj37.Size = Vector3.new(1, 0.200000003, 1)
+                obj37.BrickColor = BrickColor.new("Bright red")
+                obj37.Friction = 0.30000001192093
+                obj37.Shape = Enum.PartType.Block
+                obj37.Parent = obj1
+
+                -- 38 - Mesh
+                obj38 = Instance.new("CylinderMesh")
+                obj38.Scale = Vector3.new(0.699999988, 1.04999995, 0.699999988)
+                obj38.Parent = obj37
+
+                -- 39 - Part-to-Part Strong Joint
+                obj39 = Instance.new("ManualWeld")
+                obj39.Part0 = Part
+                obj39.Part1 = Part
+                obj39.Name = "Part-to-Part Strong Joint"
+                obj39.Parent = obj37
+
+                -- 40 - Part-to-Part Strong Joint
+                obj40 = Instance.new("ManualWeld")
+                obj40.Part0 = Part
+                obj40.Part1 = Part
+                obj40.Name = "Part-to-Part Strong Joint"
+                obj40.Parent = obj37
+
+                -- 41 - Part
+                obj41 = Instance.new("Part")
+                obj41.CFrame = CFrame.new(Vector3.new(-37.5, 2.88999963, -47.5)) * CFrame.Angles(-0, 0, -0)
+                obj41.FormFactor = Enum.FormFactor.Custom
+                obj41.TopSurface = Enum.SurfaceType.Smooth
+                obj41.BottomSurface = Enum.SurfaceType.Smooth
+                obj41.Material = Enum.Material.SmoothPlastic
+                obj41.Size = Vector3.new(1, 0.200000003, 1)
+                obj41.BrickColor = BrickColor.new("Bright blue")
+                obj41.Friction = 0.30000001192093
+                obj41.Shape = Enum.PartType.Block
+                obj41.Parent = obj1
+
+                -- 42 - Mesh
+                obj42 = Instance.new("CylinderMesh")
+                obj42.Scale = Vector3.new(0.5, 1.04999995, 0.5)
+                obj42.Parent = obj41
+
+                -- 43 - Part-to-Part Strong Joint
+                obj43 = Instance.new("ManualWeld")
+                obj43.Part0 = Part
+                obj43.Part1 = Part
+                obj43.Name = "Part-to-Part Strong Joint"
+                obj43.Parent = obj41
+
+                -- 44 - Part
+                obj44 = Instance.new("Part")
+                obj44.CFrame = CFrame.new(Vector3.new(-36.5, 2.88999963, -47.5)) * CFrame.Angles(-0, 0, -0)
+                obj44.FormFactor = Enum.FormFactor.Custom
+                obj44.TopSurface = Enum.SurfaceType.Smooth
+                obj44.BottomSurface = Enum.SurfaceType.Smooth
+                obj44.Material = Enum.Material.SmoothPlastic
+                obj44.Size = Vector3.new(1, 0.200000003, 1)
+                obj44.BrickColor = BrickColor.new("Bright blue")
+                obj44.Friction = 0.30000001192093
+                obj44.Shape = Enum.PartType.Block
+                obj44.Parent = obj1
+
+                -- 45 - Mesh
+                obj45 = Instance.new("CylinderMesh")
+                obj45.Scale = Vector3.new(0.200000003, 1.04999995, 0.200000003)
+                obj45.Parent = obj44
+
+                -- 46 - Part-to-Part Strong Joint
+                obj46 = Instance.new("ManualWeld")
+                obj46.Part0 = Part
+                obj46.Part1 = Part
+                obj46.Name = "Part-to-Part Strong Joint"
+                obj46.Parent = obj44
+
+                -- 47 - Part
+                obj47 = Instance.new("Part")
+                obj47.CFrame = CFrame.new(Vector3.new(-39.5000038, 2.88999963, -46.5)) * CFrame.Angles(-0, 0, -0)
+                obj47.FormFactor = Enum.FormFactor.Custom
+                obj47.TopSurface = Enum.SurfaceType.Smooth
+                obj47.BottomSurface = Enum.SurfaceType.Smooth
+                obj47.Material = Enum.Material.SmoothPlastic
+                obj47.Size = Vector3.new(3.00000048, 0.200000003, 1)
+                obj47.BrickColor = BrickColor.new("Really black")
+                obj47.Friction = 0.30000001192093
+                obj47.Shape = Enum.PartType.Block
+                obj47.Parent = obj1
+
+                -- 48 - Part-to-Part Strong Joint
+                obj48 = Instance.new("ManualWeld")
+                obj48.Part0 = Part
+                obj48.Part1 = nil
+                obj48.Name = "Part-to-Part Strong Joint"
+                obj48.Parent = obj47
+
+                -- 49 - Part-to-Part Strong Joint
+                obj49 = Instance.new("ManualWeld")
+                obj49.Part0 = Part
+                obj49.Part1 = nil
+                obj49.Name = "Part-to-Part Strong Joint"
+                obj49.Parent = obj47
+
+                -- 50 - Mesh
+                obj50 = Instance.new("BlockMesh")
+                obj50.Scale = Vector3.new(0.899999976, 1.04999995, 0.200000003)
+                obj50.Parent = obj47
+
+                -- 51 - Part
+                obj51 = Instance.new("Part")
+                obj51.CFrame = CFrame.new(Vector3.new(-34.5, 2.88999963, -46.5)) * CFrame.Angles(-0, 0, -0)
+                obj51.FormFactor = Enum.FormFactor.Custom
+                obj51.TopSurface = Enum.SurfaceType.Smooth
+                obj51.BottomSurface = Enum.SurfaceType.Smooth
+                obj51.Material = Enum.Material.SmoothPlastic
+                obj51.Size = Vector3.new(3.00000048, 0.200000003, 1)
+                obj51.BrickColor = BrickColor.new("Really black")
+                obj51.Friction = 0.30000001192093
+                obj51.Shape = Enum.PartType.Block
+                obj51.Parent = obj1
+
+                -- 52 - Part-to-Part Strong Joint
+                obj52 = Instance.new("ManualWeld")
+                obj52.Part0 = Part
+                obj52.Part1 = nil
+                obj52.Name = "Part-to-Part Strong Joint"
+                obj52.Parent = obj51
+
+                -- 53 - Part-to-Part Strong Joint
+                obj53 = Instance.new("ManualWeld")
+                obj53.Part0 = Part
+                obj53.Part1 = nil
+                obj53.Name = "Part-to-Part Strong Joint"
+                obj53.Parent = obj51
+
+                -- 54 - Mesh
+                obj54 = Instance.new("BlockMesh")
+                obj54.Scale = Vector3.new(0.899999976, 1.04999995, 0.200000003)
+                obj54.Parent = obj51
+
+                -- 55 - DiscTop2
+                obj55 = Instance.new("Part")
+                obj55.CFrame = CFrame.new(Vector3.new(-39.5, 3.09000063, -48.5)) * CFrame.Angles(-0, 0, -0)
+                obj55.FormFactor = Enum.FormFactor.Custom
+                obj55.TopSurface = Enum.SurfaceType.Smooth
+                obj55.BottomSurface = Enum.SurfaceType.Smooth
+                obj55.Material = Enum.Material.SmoothPlastic
+                obj55.Size = Vector3.new(3, 0.200000003, 3)
+                obj55.BrickColor = BrickColor.new("Dark stone grey")
+                obj55.Friction = 0.30000001192093
+                obj55.Shape = Enum.PartType.Block
+                obj55.Name = "DiscTop2"
+                obj55.Parent = obj1
+
+                -- 56 - Mesh
+                obj56 = Instance.new("CylinderMesh")
+                obj56.Scale = Vector3.new(0.200000003, 1.04999995, 0.200000003)
+                obj56.Parent = obj55
+
+                -- 57 - Part-to-Part Strong Joint
+                obj57 = Instance.new("ManualWeld")
+                obj57.Part0 = DiscTop2
+                obj57.Part1 = Part
+                obj57.Name = "Part-to-Part Strong Joint"
+                obj57.Parent = obj55
+
+                -- 58 - Disc2
+                obj58 = Instance.new("Part")
+                obj58.CFrame = CFrame.new(Vector3.new(-39.5, 3.08999991, -48.5)) * CFrame.Angles(-0, 0, -0)
+                obj58.FormFactor = Enum.FormFactor.Custom
+                obj58.TopSurface = Enum.SurfaceType.Smooth
+                obj58.BottomSurface = Enum.SurfaceType.Smooth
+                obj58.Material = Enum.Material.Sand
+                obj58.Size = Vector3.new(3, 0.200000003, 3)
+                obj58.BrickColor = BrickColor.new("Black")
+                obj58.Friction = 0.30000001192093
+                obj58.Shape = Enum.PartType.Block
+                obj58.Name = "Disc2"
+                obj58.Parent = obj1
+
+                -- 59 - Mesh
+                obj59 = Instance.new("CylinderMesh")
+                obj59.Scale = Vector3.new(0.899999976, 1, 0.899999976)
+                obj59.Parent = obj58
+
+                -- 60 - Part-to-Part Strong Joint
+                obj60 = Instance.new("ManualWeld")
+                obj60.Part0 = Disc2
+                obj60.Part1 = Part
+                obj60.Name = "Part-to-Part Strong Joint"
+                obj60.Parent = obj58
+
+                -- 61 - Part
+                obj61 = Instance.new("Part")
+                obj61.CFrame = CFrame.new(Vector3.new(-37, 2.69000006, -46.5)) * CFrame.Angles(-0, 0, -0)
+                obj61.FormFactor = Enum.FormFactor.Custom
+                obj61.TopSurface = Enum.SurfaceType.Smooth
+                obj61.BottomSurface = Enum.SurfaceType.Smooth
+                obj61.Material = Enum.Material.SmoothPlastic
+                obj61.Size = Vector3.new(8, 0.600000024, 1)
+                obj61.BrickColor = BrickColor.new("Dark stone grey")
+                obj61.Friction = 0.30000001192093
+                obj61.Shape = Enum.PartType.Block
+                obj61.Parent = obj1
+
+                -- 62 - Slider2
+                obj62 = Instance.new("Part")
+                obj62.CFrame = CFrame.new(Vector3.new(-38.7000237, 2.89000058, -46.5)) * CFrame.Angles(-0, 0, -0)
+                obj62.FormFactor = Enum.FormFactor.Custom
+                obj62.TopSurface = Enum.SurfaceType.Smooth
+                obj62.BottomSurface = Enum.SurfaceType.Smooth
+                obj62.Material = Enum.Material.SmoothPlastic
+                obj62.Size = Vector3.new(0.200000152, 0.200000003, 1)
+                obj62.BrickColor = BrickColor.new("Dark stone grey")
+                obj62.Friction = 0.30000001192093
+                obj62.Shape = Enum.PartType.Block
+                obj62.Name = "Slider2"
+                obj62.Parent = obj1
+
+                -- 63 - Part-to-Part Strong Joint
+                obj63 = Instance.new("ManualWeld")
+                obj63.Part0 = Slider2
+                obj63.Part1 = nil
+                obj63.Name = "Part-to-Part Strong Joint"
+                obj63.Parent = obj62
+
+                -- 64 - Part-to-Part Strong Joint
+                obj64 = Instance.new("ManualWeld")
+                obj64.Part0 = Slider2
+                obj64.Part1 = nil
+                obj64.Name = "Part-to-Part Strong Joint"
+                obj64.Parent = obj62
+
+                -- 65 - Mesh
+                obj65 = Instance.new("BlockMesh")
+                obj65.Scale = Vector3.new(0.899999976, 1.45000005, 0.5)
+                obj65.Parent = obj62
+
+                -- 66 - Slider
+                obj66 = Instance.new("Part")
+                obj66.CFrame = CFrame.new(Vector3.new(-34.6999969, 2.88999987, -46.5)) * CFrame.Angles(-0, 0, -0)
+                obj66.FormFactor = Enum.FormFactor.Custom
+                obj66.TopSurface = Enum.SurfaceType.Smooth
+                obj66.BottomSurface = Enum.SurfaceType.Smooth
+                obj66.Material = Enum.Material.SmoothPlastic
+                obj66.Size = Vector3.new(0.200000152, 0.200000003, 1)
+                obj66.BrickColor = BrickColor.new("Dark stone grey")
+                obj66.Friction = 0.30000001192093
+                obj66.Shape = Enum.PartType.Block
+                obj66.Name = "Slider"
+                obj66.Parent = obj1
+
+                -- 67 - Part-to-Part Strong Joint
+                obj67 = Instance.new("ManualWeld")
+                obj67.Part0 = Slider
+                obj67.Part1 = nil
+                obj67.Name = "Part-to-Part Strong Joint"
+                obj67.Parent = obj66
+
+                -- 68 - Part-to-Part Strong Joint
+                obj68 = Instance.new("ManualWeld")
+                obj68.Part0 = Slider
+                obj68.Part1 = nil
+                obj68.Name = "Part-to-Part Strong Joint"
+                obj68.Parent = obj66
+
+                -- 69 - Mesh
+                obj69 = Instance.new("BlockMesh")
+                obj69.Scale = Vector3.new(0.899999976, 1.45000005, 0.5)
+                obj69.Parent = obj66
+
+                for i,v in pairs(obj1:children()) do
+                        v.Anchored = true
+                        v.Locked = true
+                end
+
+        function Recursive(Model)
+                local Stuff = {}
+                local function Recur(Targ)
+                        for i,v in pairs(Targ:getChildren()) do
+                                table.insert(Stuff,v)
+                                Recur(v)
+                        end
+                end
+                Recur(Model)
+                return Stuff
+        end
+
+        function MoveModel(Model,CF)
+            local Center = Model:getModelCFrame()
+                local Offsets = {}
+            for i,v in pairs (Recursive(Model)) do
+                if v:IsA("BasePart") then
+                                Offsets[v] = CF*Center:toObjectSpace(v.CFrame)
+                end
+            end
+               
+                for i,v in pairs(Offsets) do
+                        i.CFrame = v
+                end
+        end
+
+        MoveModel(obj1, torso.CFrame*CFrame.new(0,-1.5,-3))
+
+                local value = 0
+                local Slider2CFrame = obj62.CFrame
+                local SliderCFrame = obj66.CFrame
+                local colur = 0
+                local hue = 0
+                local DiscoLight = Instance.new('PointLight', obj2)
+                DiscoLight.Range = 0
+                game:service'RunService'.RenderStepped:connect(function()
+                        if obj1.Parent ~= char then return end
+                        if sound.IsPlaying then
+                                hue = ((hue+5)%360)
+                                colur = HSV(hue,.8,.8)
+                                DiscoLight.Color = Color3.new(colur.r, colur.g, colur.b)
+                                DiscoLight.Range = 60
+                                value = (value % 360) + math.random()
+                                obj13.Color = Color3.new(colur.r, colur.g, colur.b)
+                                obj58.CFrame = obj58.CFrame * CFrame.Angles(0, .05, 0)
+                                obj5.CFrame = obj5.CFrame * CFrame.Angles(0, .05, 0)
+                                obj62.CFrame = Slider2CFrame * CFrame.new(math.sin(value)*.25, 0, 0)
+                                obj66.CFrame = SliderCFrame * CFrame.new(-math.sin(value)*.25, 0, 0)
+                        else
+                        DiscoLight.Range = 0
+                        obj13.Color = Color3.new()
+                        end
+                end)
+
+                local function createText(parent, msg, line, size, func)
+            local textLabel
+            if func then
+                textLabel = Instance.new("TextButton", parent)
+            else
+                textLabel = Instance.new("TextLabel", parent)
+            end
+            textLabel.Text = msg
+            textLabel.Name = "List"
+            if size ~= true then
+            textLabel.TextScaled = false
+            textLabel.FontSize = 'Size14'
+            elseif size == true then
+            textLabel.TextScaled = true
+            end
+            textLabel.BackgroundColor = BrickColor.new'Olive'
+            textLabel.BackgroundTransparency = .9
+            textLabel.TextColor = BrickColor.White()
+            textLabel.TextStrokeTransparency = 0.65
+            textLabel.Size = UDim2.new(1, 0, 0, 25)
+            textLabel.TextXAlignment = 'Left'
+            textLabel.Position = UDim2.new(0, 0, 0, (line-1)*25)
+            if func then
+                textLabel.MouseButton1Down:connect(function()
+                local r,e = ypcall(function()
+                    func(plr)
+                end)
+                if e then print(e) end
+                end)
+            end
+                end
+
+                gui = Instance.new('ScreenGui', plrgui)
+                gui.Name = 'äMixer'
+                wait()
+                local dragframe = Instance.new('Frame', gui)
+                dragframe.Size = UDim2.new(0, 598, 0, 18)
+                dragframe.BackgroundColor = BrickColor.new'Dark stone grey'
+                dragframe.Position = UDim2.new(0, gui.AbsoluteSize.X - gui.AbsoluteSize.X/2 - 300, 0, 10)
+                dragframe.Active = true
+                dragframe.Draggable = true
+                dragframe.ZIndex = 3
+                dragframe.BorderSizePixel = 0
+                local mainframe = Instance.new('Frame', dragframe)
+                mainframe.Size = UDim2.new(0, 600, 0, 415)
+                mainframe.Position = UDim2.new(0, -1, 0, -1)
+                mainframe.BackgroundColor = BrickColor.new'Olive'
+                local CPframe = Instance.new('ScrollingFrame', mainframe)
+                CPframe.Size = UDim2.new(0, 470, 0, 22)
+                CPframe.Position = UDim2.new(0, 130, 0, 50)
+                CPframe.BackgroundColor = BrickColor.new'Dark stone grey'
+                CPframe.ScrollBarThickness = 0
+                local CP = Instance.new('TextLabel', CPframe)
+                CP.Size = UDim2.new(1,0,0,22)
+                CP.BackgroundTransparency = 1
+                CP.ZIndex = 7
+                CP.FontSize = 'Size18'
+                CP.TextColor3 = Color3.new(1,1,1)
+                CP.TextStrokeTransparency = 0
+                CP.TextXAlignment = 'Left'
+                CP.Text = 'Playing /-/ None'
+
+                local oldCPframePos
+
+                local scrollframe = Instance.new('ScrollingFrame', mainframe)
+                scrollframe.Size = UDim2.new(0, 590, 0, 330)
+                scrollframe.Position = UDim2.new(0, 5, 0, 80)
+                scrollframe.BackgroundColor = BrickColor.new'Olive'
+                scrollframe.CanvasSize = UDim2.new(0, 590, 0, 25*#SoundsList)
+                local playbutton = Instance.new('TextButton', mainframe)
+                playbutton.Size = UDim2.new(0, 50, 0, 50)
+                playbutton.Position = UDim2.new(0, 10, 0, 25)
+                playbutton.BackgroundColor3 = Color3.new(0,1,0)
+                playbutton.Text = ">"
+                playbutton.TextScaled = true
+                playbutton.TextColor3 = Color3.new(1,1,1)
+                playbutton.TextStrokeTransparency = 0
+                playbutton.MouseButton1Down:connect(function()
+                        game:service'ContentProvider':Preload(sound.SoundId)
+                        sound:play()
+                        local r,e = ypcall(function()
+                        CP.Text = 'Playing /-/ '..game:service'MarketplaceService':GetProductInfo(sound.SoundId:match("%d+")).Name
+                        end)
+                        if e then CP.Text = 'Playing /-/ Unknown asset' end
+                        wait()
+                        CPframe.CanvasSize = UDim2.new(0, CP.TextBounds.X, 0, 0)
+                end)
+                local stopbutton = Instance.new('TextButton', mainframe)
+                stopbutton.Size = UDim2.new(0, 50, 0, 50)
+                stopbutton.Position = UDim2.new(0, 70, 0, 25)
+                stopbutton.BackgroundColor3 = Color3.new(1,0,0)
+                stopbutton.Text = "="
+                stopbutton.TextScaled = true
+                stopbutton.TextColor3 = Color3.new(1,1,1)
+                stopbutton.TextStrokeTransparency = 0
+                stopbutton.MouseButton1Down:connect(function()
+                        sound:stop()
+                        CP.Text = 'Playing /-/ None'
+                        CPframe.CanvasPosition = Vector2.new()
+                end)
+                local idbox = Instance.new('TextBox', mainframe)
+                idbox.Size = UDim2.new(0, 100, 0, 22)
+                idbox.Position = UDim2.new(0, 130, 0, 25)
+                idbox.Text = 'Insert ID here'
+                idbox.BackgroundTransparency = .5
+                idbox.TextScaled = true
+                idbox.TextXAlignment = 'Left'
+                idbox.BackgroundColor3 = BrickColor.new'Olive'.Color
+                idbox.TextColor3 = Color3.new()
+                idbox.TextStrokeTransparency = 0
+                local submit = Instance.new('TextButton', mainframe)
+                submit.Size = UDim2.new(0, 50, 0, 22)
+                submit.Position = UDim2.new(0, 240, 0, 25)
+                submit.BackgroundColor3 = Color3.new(.2,.5,.4)
+                submit.Text = "Submit ID"
+                submit.TextScaled = false
+                submit.TextColor3 = Color3.new(1,1,1)
+                submit.TextStrokeTransparency = 0
+                submit.MouseButton1Down:connect(function()
+                        if idbox.Text == 'Insert ID here' then return end
+                        sound:stop()
+                        sound.SoundId = "rbxassetid://"..tonumber(idbox.Text:match("%d+"))
+                        newSound(game:service'MarketplaceService':GetProductInfo(idbox.Text:match("%d+")).Name..' /-ID-/ '..idbox.Text:match("%d+"), idbox.Text:match("%d+"))
+                        createText(scrollframe, game:service'MarketplaceService':GetProductInfo(idbox.Text:match("%d+")).Name.." /-ID-/ "..idbox.Text:match("%d+"), #scrollframe:children()+1, false, function() sound.SoundId = "rbxassetid://"..idbox.Text:match("%d+") end)
+                        scrollframe.CanvasSize = UDim2.new(0, 590, 0, 25*#SoundsList)
+                        idbox.Text = 'Insert ID here'
+                end)
+
+                local minimize = Instance.new('TextButton', dragframe)
+                minimize.Size = UDim2.new(0, 16, 0, 16)
+                minimize.Position = UDim2.new(0, 582, 0, 1)
+                minimize.BackgroundColor = BrickColor.new'Dark stone grey'
+                minimize.Text = '-'
+                minimize.TextYAlignment = 'Bottom'
+                minimize.ZIndex = 3
+                minimize.TextColor3 = Color3.new(1,1,1)
+
+                local maximize = Instance.new('TextButton', gui)
+                maximize.Size = UDim2.new(0, 30, 0, 30)
+                maximize.Position = UDim2.new(0, gui.AbsoluteSize.X-30, 0, gui.AbsoluteSize.Y-30)
+                maximize.BackgroundColor = BrickColor.new'Dark stone grey'
+                maximize.Text = '='
+                maximize.Visible = false
+                maximize.TextColor3 = Color3.new(1,1,1)
+
+                minimize.MouseButton1Down:connect(function()
+                        dragframe.Visible = false
+                        maximize.Visible = true
+                end)
+                maximize.MouseButton1Down:connect(function()
+                        dragframe.Visible = true
+                        maximize.Visible = false
+                end)
+
+                for i,v in pairs(SoundsList) do
+            createText(scrollframe, v.Name.." /-ID-/ "..v["ID"], i, false, function() sound:stop() sound.SoundId = "rbxassetid://"..v["ID"] sound.Pitch = v["Pitch"] end)
+        end
+
+        while wait(0) do
+                        if CP.TextBounds.X > 470 then
+                                if CPframe.CanvasPosition == oldCPframePos and not (CPframe.CanvasPosition.X >= CP.TextBounds.X-471) then
+                                CPframe.CanvasPosition = CPframe.CanvasPosition + Vector2.new(1, 0)
+                                elseif (CPframe.CanvasPosition.X >= CP.TextBounds.X-471)then
+                                wait(3)
+                                CPframe.CanvasPosition = Vector2.new()
+                                wait(1)
+                                end
+                                oldCPframePos = CPframe.CanvasPosition
+                        end
+                end
+end
+
+
+mouse.KeyDown:connect(function(k)
+        if k == 'r' then
+                activated = not activated
+                if activated then
+                        BeginPlacingDisco()
+                else
+                        RemoveDisco()
+                end
+        end
+end)
