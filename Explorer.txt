@@ -1,0 +1,54 @@
+--// Original file made by Rocky2u, edited by Leafy //--
+
+Enable_ScriptBar = true
+Enable_Explorer = true
+Enable_YourMom_Gui = true
+Enable_CommandScript = true
+Enable_PhantomX_Check = true
+Enable_TwistedMurderer = true
+Enable_RoXploit5_Check = true
+Enable_ResmoMeme_Check = true
+
+
+
+
+
+
+
+
+
+
+local Player = game.Players.LocalPlayer
+local Mouse = Player:GetMouse()
+
+
+
+--// Explorer
+
+if Enable_Explorer == true then
+game:GetObjects('rbxassetid://289421038')[1].Parent = game.CoreGui
+
+local Explorer = game.CoreGui:WaitForChild('ExplorerGui').Holder
+
+loadstring(Explorer.ExplorerPanel.LocalScript.Source)()
+loadstring(Explorer.PropertiesPanel.Properties.Source)()
+
+local Opened = false
+
+Mouse.KeyDown:connect(function(Key)
+if Key:byte() == 23 then
+if Opened == false then
+Explorer:TweenPosition(UDim2.new(0, 0, 0, 0), 'Out', 'Quad', 0.5)
+Opened = true
+elseif Opened == true then
+Explorer:TweenPosition(UDim2.new(0, 300, 0, 0), 'Out', 'Quad', 0.5)
+Opened = false
+end
+end
+end)
+end
+
+
+
+
+
